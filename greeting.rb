@@ -1,9 +1,12 @@
-def greeting
-  puts "Hello World"
+class Person
+  def initialize(name)
+    @name = name
+  end
+  
+  def name
+    @name
+  end
 end
 
-greeting
-greeting
-greeting
-greeting
-greeting
+kanye = Person.new("Kanye West")
+puts kanye.name
