@@ -1,6 +1,5 @@
 class TopOneHundredMovies::Movie 
 
-extend ActionView::Base
 	
 #Class variables
 	@@viewed = []
@@ -9,7 +8,7 @@ extend ActionView::Base
 #Attr Reader Variables
 	attr_reader :imdb_ranking, :index, :title, :director, :year, :rating, :duration, :genres #Reader methods that scrape basic details from IMDb Index Page
 	
-	attr_reader :actors, :characters, :cast, :tagline, :plot, :trivia, :quotes #Reader methods that scrape in-depth details from movie's own IMDb page
+	attr_reader :cast, :tagline, :plot, :trivia, :quotes #Reader methods that scrape in-depth details from movie's own IMDb page
 
 #Initialization method
 	def initialize (imdb_ranking = nil) #initializes movie with basic details from IMDb Index Page
@@ -38,7 +37,7 @@ extend ActionView::Base
 	end
   
 	def user_input
-      puts "Please enter a movie ranked between 1-100"
+      puts "\nPlease enter a movie ranked between 1-100:"
       user_input = (gets.strip).to_i
       if input_requirement(user_input) == true
         @imdb_ranking = user_input
@@ -104,7 +103,7 @@ extend ActionView::Base
 	end
 	
 	def ask_user
-	   puts "Enter (1) if you'd like to know #{title}'s tagline.\nEnter (2) if you'd like to know #{title}'s plot.\nEnter (3) if you'd like to know interesting trivia about #{title}.\nEnter (4) if you'd like to hear some of the most famous quotes from #{title}.\nEnter (5) if you'd like to know #{title}'s cast and crew."
+	   puts "Enter (1) if you'd like to know #{title}'s tagline.\nEnter (2) if you'd like to know #{title}'s plot.\nEnter (3) if you'd like to know interesting trivia about #{title}.\nEnter (4) if you'd like to hear some of the most famous quotes from #{title}.\nEnter (5) if you'd like to know #{title}'s cast."
 	 end
 	
 	def tagline
@@ -123,13 +122,24 @@ extend ActionView::Base
 	def print_plot
 	  puts "\nPlot: #{plot}"
 	end
-
+	
+	def cast
+	  actors = []
+	  cast_array = movie_page.css("table.cast_list td.primary_photo + td a")
+	  cast_array.collect{|actor| actors << "\n" + actor.text.strip}
+	  actors.join(' ')
+	end
+	
+	def print_cast
+	  puts "\nThe movie's cast consists of: #{cast}"
+	end
+	
 	def trivia
 	  trivia = []
 	  trivia_array = trivia_page.css("div.sodatext")
 	  i = 1
 	  trivia_array.collect{|trivium| 
-	    trivia << "\nFun Fact ##{i}: #{self.class.full_sanitizer.sanitize(trivium.to_s.strip)}"
+	    trivia << "\nFun Fact ##{i}: #{ActionView::Base.full_sanitizer.sanitize(trivium.to_s.strip)}"
 	    i+=1
 	  }
 	  trivia
@@ -143,72 +153,96 @@ extend ActionView::Base
 	
 	def print_trivia
 		puts "\nHere are fifty fun facts about #{title}:"
-		i = 1
+		i = 0
 		user_input = 'y'
 		
-		while i <= 300 && user_input == 'y'
-		  
-		  while i <= 50
+		while i <= 299 && user_input == 'y'
 		    puts "\n"
-		    puts trivia[0..49]
-		    i+=50
-		    if trivia[0..49].count == 50
-		      user_input = more_fun_facts
-		    else
-		      user_input == 'n'
-		    end
-		  end
-		  
-	    while i >50 && i <=100 && user_input == 'y'
-	    	puts "\n"
-		    puts trivia[50..99]
-		    i+=50
-		    if trivia[50..99].count == 50
-		      user_input = more_fun_facts
-		    else
-		      user_input == 'n'
-		    end
-	    end
-	    
-	    while i > 100 && i <= 150 && user_input == 'y'
-		    puts "\n"
-		    puts trivia[100..149]
-		    i+=50
-		    if trivia[100..149].count == 50
-		      user_input = more_fun_facts
-		    else
-		      user_input == 'n'
-		    end
-	    end
-	
-	    while i > 150 && i <= 200 && user_input == 'y'
-	 		  puts "\n"
-	 		  puts trivia[150..199]
-	 		  i+=50
-	 		  if trivia[150..199].count == 50
-		      user_input = more_fun_facts
-		    else
-		      user_input == 'n'
-		    end
-	    end
-	    
-	    while i > 200 && i <= 250 && user_input == 'y'
-		    puts "\n"
-		    puts trivia[200..249]
-		    i+=50
-		    if trivia[200..249].count == 50
-		      user_input = more_fun_facts
-		    else
-		      user_input == 'n'
-		    end
-	    end
-	    
-	    while i > 250 && i <= 300 && user_input == 'y'
-		    puts "\n"
-		    puts trivia[250..299]
-		    i+=50
-	    end
-	 end
+			
+			while i >= 0 && i <= 49 && user_input == 'y'
+				if trivia[49] != nil 
+					puts trivia[0..49]
+					i+=50
+					user_input = more_fun_facts
+				else 
+					while trivia[i] != nil
+						puts trivia[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 50 && i <= 99 && user_input == 'y'
+				if trivia[99] != nil 
+					puts trivia[50..99]
+					i+=50
+					user_input = more_fun_facts
+				else 
+					while trivia[i] != nil
+						puts trivia[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 100 && i <= 149 && user_input == 'y'
+				if trivia[149] != nil 
+					puts trivia[100..149]
+					i+=50
+					user_input = more_fun_facts
+				else 
+					while trivia[i] != nil
+						puts trivia[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 150 && i <= 199 && user_input == 'y'
+				if trivia[199] != nil 
+					puts trivia[150..199]
+					i+=50
+					user_input = more_fun_facts
+				else 
+					while trivia[i] != nil
+						puts trivia[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 200 && i <= 249 && user_input == 'y'
+				if trivia[249] != nil 
+					puts trivia[200..249]
+					i+=50
+					user_input = more_fun_facts
+				else 
+					while trivia[i] != nil
+						puts trivia[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 250 && i <= 299 && user_input == 'y'
+				if trivia[299] != nil 
+					puts trivia[250..299]
+					i+=50
+					user_input = more_fun_facts
+				else 
+					while trivia[i] != nil
+						puts trivia[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+		end
 	end
 	
 	def quotes
@@ -216,7 +250,7 @@ extend ActionView::Base
 	  quotes_array = quotes_page.css("div.sodatext")
 	  i = 1
 	  quotes_array.collect{|quote| 
-	    quotes << "\nQuote ##{i}: #{self.class.full_sanitizer.sanitize(quote.to_s.strip)}"
+	    quotes << "\nQuote ##{i}: #{ActionView::Base.full_sanitizer.sanitize(quote.to_s.strip)}"
 	    i+=1
 	  }
 	  quotes
@@ -231,114 +265,98 @@ extend ActionView::Base
 	
 	def print_quotes
 		puts "Here are some of #{title}'s most memorable quotes:"
-		i = 1
+		i = 0
 		user_input = 'y'
 		
-		while i <= 300 && user_input == 'y'
-		  
-		  while i <= 50
+		while i <= 299 && user_input == 'y'
 		    puts "\n"
-		    puts quotes[0..49]
-		    i+=50
-		    if quotes[0..49].count == 50
-		      user_input = more_quotes
-		    else
-		      user_input = 'n'
-		    end
-		  end
-		  
-	    while i >50 && i <=100 && user_input == 'y'
-	    	puts "\n"
-		    puts quotes[50..99]
-		    i+=50
-		    if quotes[50..99].count == 50
-		      user_input = more_quotes
-		    else
-		      user_input = 'n'
-		    end
-	    end
-	    
-	    while i > 100 && i <= 150 && user_input == 'y'
-		    puts "\n"
-		    puts quotes[100..149]
-		    i+=50
-		    if quotes[100..149].count == 50
-		      user_input = more_quotes
-		    else
-		      user_input = 'n'
-		    end
-	    end
 	
-	    while i > 150 && i <= 200 && user_input == 'y'
-	 		  puts "\n"
-	 		  puts quotes[150..199]
-	 		  i+=50
-	 		  if quotes[150..199].count == 50
-		      user_input = more_quotes
-		    else
-		      user_input = 'n'
-		    end
-	    end
-	    
-	    while i > 200 && i <= 250 && user_input == 'y'
-		    puts "\n"
-		    puts quotes[200..249]
-		    i+=50
-		    if quotes[200..249].count == 50
-		      user_input = more_quotes
-		    else
-		      user_input = 'n'
-		    end
-	    end
-	    
-	    while i > 250 && i <= 300 && user_input == 'y'
-		    puts "\n"
-		    puts quotes[250..299]
-		    i+=50
-	    end
-	 end
+			while i >= 0 && i <= 49 && user_input == 'y'
+				if quotes[49] != nil 
+					puts quotes[0..49]
+					i+=50
+					user_input = more_quotes
+				else 
+					while quotes[i] != nil
+						puts quotes[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 50 && i <= 99 && user_input == 'y'
+				if quotes[99] != nil 
+					puts quotes[50..99]
+					i+=50
+					user_input = more_quotes
+				else 
+					while quotes[i] != nil
+						puts quotes[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 100 && i <= 149 && user_input == 'y'
+				if quotes[149] != nil 
+					puts quotes[100..149]
+					i+=50
+					user_input = more_quotes
+				else 
+					while quotes[i] != nil
+						puts quotes[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 150 && i <= 199 && user_input == 'y'
+				if quotes[199] != nil 
+					puts quotes[150..199]
+					i+=50
+					user_input = more_quotes
+				else 
+					while quotes[i] != nil
+						puts quotes[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 200 && i <= 249 && user_input == 'y'
+				if quotes[249] != nil 
+					puts quotes[200..249]
+					i+=50
+					user_input = more_quotes
+				else 
+					while quotes[i] != nil
+						puts quotes[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+			
+			while i >= 250 && i <= 299 && user_input == 'y'
+				if quotes[299] != nil 
+					puts quotes[250..299]
+					i+=50
+					user_input = more_quotes
+				else 
+					while quotes[i] != nil
+						puts quotes[i]
+						i+=1
+					end
+					user_input = 'n'
+				end
+			end
+		end
 	end
 	
-	def actors
-	  actors = []
-	  cast_array = movie_page.css("table.cast_list td.primary_photo + td a")
-	  cast_array.collect{|actor| actors << actor.text.strip}
-	  actors
-	end
-	
-	def characters
-	  characters = []
-	  movie_page.css("table.cast_list .character a").collect{|character| characters << character.text.strip}
-	  characters
-	end
-	
-	def cast
-	  cast_array = []
-	  i = 0 
-	  while i < actors.count
-	    actor_role = actors[i].to_s + " - " + characters[i].to_s
-	    cast_array << actor_role
-	    i+=1
-	  end
-	  cast_array
-	end
-	
-	def print_cast
-	  puts "\nThe movie's cast consists of #{cast}"
-	end
-	
-	def advanced_details
-	  @tagline = tagline
-	  @plot = plot
-	  @trivia = trivia
-	  @quotes = quotes
-	  self
-	end
-	
-	def print_advanced_details #Prints all the advanced details scraped for the user to see
-	  advanced_details
-	  puts "\nTagline: #{tagline}\nPlot: #{plot}\nTrivia: #{trivia}\nQuotes: #{quotes}"
-	end
 	
 #Methods that show or save movies to the @@viewed class variable
   	
@@ -363,24 +381,28 @@ extend ActionView::Base
 	
 	def add_to_my_watchlist
 	 if self.class.my_watchlist.find {|watchlisted_movie| watchlisted_movie.imdb_ranking == self.imdb_ranking} != nil
-	   puts "Already added to my watchlist. No duplicates allowed."
+	   puts "Already added to your watchlist. No duplicates allowed."
 	   self
 	 else
-	   puts "Added to my watchlist successfully."
+	   puts "Added to your watchlist successfully."
 	   self.class.my_watchlist << self
 	   self
 	 end
 	end 
 	
 	def self.print_my_watchlist
-		puts "Here's your current watchlist: "
 		movie_titles = []
 		i = 1
 		self.my_watchlist.each{|movie| 
 		movie_titles << "#{i}. #{movie.title}"
 		i += 1
 		}
-		puts movie_titles
+		if movie_titles.count == 0 
+			puts "Your watchlist is currently empty."
+		else
+			puts "Here's your current watchlist: "
+			puts movie_titles
+		end
 	end
 end
 

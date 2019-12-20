@@ -10,18 +10,18 @@ Gem::Specification.new do |spec|
   spec.email         = ["'dmaster18@gmail.com'"]
 
   spec.summary       = %q{TopOneHundredMovies is a program that allows users to see IMDb's Top 100 Movies of All Time and to obtain details about movies they'd like to know more about.}
-  spec.description   = %q{TopOneHundredMovies is a program that allows users to see IMDb's Top 100 Movies of All Time and to obtain details about movies they'd like to know more about. Users can find out basic information about one of these highly regarded movies such as the movie's title, director, year of release, rating, duration, and genres. If the user chooses, he or she can learn even more intricate details about the film such as its tagline, plot, famous quotes, trivia, and full cast.}
-  spec.homepage      = "https://github.com/dmaster18/movie.rb"
+  spec.description   = %q{TopOneHundredMovies is a program that allows users to see IMDb's Top 100 Movies of All Time and to obtain details about any of the top 100 films, including its title, director, year of release, rating, duration, and genre. Furthermore, if they choose to do so, user can learn even more intricate details about a selected film, such as its tagline, plot, famous quotes, trivia, and cast. Finally, the gem enables users to save films into a personal playlist to remind them to watch the film in the future.}
+  spec.homepage      = "https://github.com/dmaster18/top_one_hundred_movies"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+    spec.metadata["allowed_push_host"] = "https://github.com/dmaster18/top_one_hundred_movies"
 
     spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/dmaster18/movie.rb"
-    spec.metadata["changelog_uri"] = "https://github.com/dmaster18/movie.rb"
+    spec.metadata["source_code_uri"] = "https://github.com/dmaster18/top_one_hundred_movies"
+    spec.metadata["changelog_uri"] = "https://github.com/dmaster18/top_one_hundred_movies"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
@@ -38,10 +38,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "nokogiri", "~> 1.10.7"
   spec.add_development_dependency "actionview", "~> 6.0.1"
-  spec.add_development_dependency "builder", "~> 3.2.3"
-  spec.add_development_dependency "activesupport", "~> 6.0.1"
-  spec.add_development_dependency "erubi", "~> 1.9.0" 
-  spec.add_development_dependency "rails-html-sanitizer", "~> 1.3.0" 
-  spec.add_development_dependency "actionpack", "~> 6.0.1"
-  spec.add_development_dependency "activemodel", "~> 6.0.1"  
 end

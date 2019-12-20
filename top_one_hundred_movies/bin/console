@@ -9,5 +9,6 @@ require "top_one_hundred_movies"
 # (If you use this, don't forget to add pry to your Gemfile!)
 # require "pry"
 # Pry.start
-require "irb"
+
+require 'irb'
 IRB.start(__FILE__)
