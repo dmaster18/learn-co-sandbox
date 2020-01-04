@@ -1,14 +1,14 @@
 class TopOneHundredMovies::Scraper
   
 #Methods that interface directly with the IMDb HTML
-  def self.index_page #Retrieves Nokogiri data from IMDb Index Page
+  def index_page #Retrieves Nokogiri data from IMDb Index Page
     index_html = "https://www.imdb.com/list/ls055592025/"
     Nokogiri::HTML(open(index_html))
   end
   
   def movie_page_url(movie_object) #Generates selected movie's IMDb page HTML
 	  index = movie_object.index
-	  resource = self.class.index_page.css(".lister-item-header a")[index]["href"]
+	  resource = index_page.css(".lister-item-header a")[index]["href"]
 	  movie_page_url = "https://www.imdb.com" + resource
   end
   
@@ -42,12 +42,12 @@ class TopOneHundredMovies::Scraper
   end
   
 
-#self.print_movie_list is a class method that prints the titles of the top 100 movies relatively quickly for the user to view to 
+#print_movie_list is an instance method that prints the titles of the top 100 movies relatively quickly for the user to view to 
 	
-  def self.print_movie_list #Prints an array of top 100 movies from IMDb Index Page
+  def print_movie_list #Prints an array of top 100 movies from IMDb Index Page
 	all_titles = []
 	i = 1
-	self.index_page.css("h3.lister-item-header a").each {|title| 
+	index_page.css("h3.lister-item-header a").each {|title| 
 		all_titles << "#{i}. #{title.text.strip}"
 	    i+=1
 	 }
