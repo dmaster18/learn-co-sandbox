@@ -1,20 +1,20 @@
 class TopOneHundredMovies::Scraper
   
 #Methods that interface directly with the IMDb HTML
-  def self.index_page #Retrieves Nokogiri data from IMDb Index Page
-    index_html = open("https://www.imdb.com/list/ls055592025/")
-    Nokogiri::HTML(index_html)
+  def index_page #Retrieves Nokogiri data from IMDb Index Page
+    index_html = "https://www.imdb.com/list/ls055592025/"
+    Nokogiri::HTML(open(index_html))
   end
   
   def movie_page_url(movie_object) #Generates selected movie's IMDb page HTML
 	  index = movie_object.index
-	  resource = self.class.index_page.css(".lister-item-header a")[index]["href"]
+	  resource = index_page.css(".lister-item-header a")[index]["href"]
 	  movie_page_url = "https://www.imdb.com" + resource
   end
   
   def movie_page(movie_object) #Retrieves Nokogiri data from selected movie's IMDb page
-    movie_html = open(movie_page_url(movie_object))
-    Nokogiri::HTML(movie_html)
+    movie_html = movie_page_url(movie_object)
+    Nokogiri::HTML(open(movie_html))
   end
   
   def trivia_page_url(movie_object) #Generates selected movie's IMDb trivia page HTML
@@ -25,8 +25,8 @@ class TopOneHundredMovies::Scraper
   end
   
   def trivia_page(movie_object) #Retrieves Nokogiri data from selected movie's IMDb trivia page
-    trivia_html = open(trivia_page_url(movie_object))
-    Nokogiri::HTML(trivia_html)
+    trivia_html = trivia_page_url(movie_object)
+    Nokogiri::HTML(open(trivia_html))
   end
   
   def quotes_page_url(movie_object) #Generates selected movie's IMDb trivia page HTML
@@ -37,17 +37,17 @@ class TopOneHundredMovies::Scraper
   end
   
   def quotes_page(movie_object) #Retrieves Nokogiri data from selected movie's IMDb trivia page
-    quotes_html = open(quotes_page_url(movie_object))
-    Nokogiri::HTML(quotes_html)
+    quotes_html = quotes_page_url(movie_object)
+    Nokogiri::HTML(open(quotes_html))
   end
   
 
-#self.print_movie_list is a class method that prints the titles of the top 100 movies relatively quickly for the user to view to 
+#print_movie_list is an instance method that prints the titles of the top 100 movies relatively quickly for the user to view to 
 	
-  def self.print_movie_list #Prints an array of top 100 movies from IMDb Index Page
+  def print_movie_list #Prints an array of top 100 movies from IMDb Index Page
 	all_titles = []
 	i = 1
-	self.index_page.css("h3.lister-item-header a").each {|title| 
+	index_page.css("h3.lister-item-header a").each {|title| 
 		all_titles << "#{i}. #{title.text.strip}"
 	    i+=1
 	 }
@@ -58,14 +58,14 @@ class TopOneHundredMovies::Scraper
 #Methods that initialize movie objects
     
   def movie_initializer #movie_initializer is an instance method that allows user to manually initialize one movie object at a time
-    new_movie = Movie.new
+    new_movie = TopOneHundredMovies::Movie.new
   end
   
   def initialize_all_movies #initialize_all_movies is an instance method that will automatically initialize all the top 100 movies
     i = 0 
     all_movies = []
     while i < 100
-      new_movie = Movie.new(i)
+      new_movie = TopOneHundredMovies::Movie.new(i)
       all_movies << new_movie
       i+=1
     end

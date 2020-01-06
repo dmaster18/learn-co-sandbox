@@ -2,7 +2,7 @@
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/top_one_hundred_movies`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-TODO: Delete this and the text above, and describe your gem
+TopOneHundredMovies is a program that allows users to see IMDb's Top 100 Movies of All Time and to obtain details about any of the top 100 films, including its title, director, year of release, rating, duration, and genre. Furthermore, if they choose to do so, user can learn even more intricate details about a selected film, such as its tagline, plot, famous quotes, trivia, and cast. Finally, the gem enables users to save films into a personal playlist to remind them to watch the film in the future.
 
 ## Installation
 
@@ -22,7 +22,6 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
 
 ## Development
 
@@ -32,7 +31,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/'intuitive-parameter-2662'/top_one_hundred_movies. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dmaster18/top_one_hundred_movies/pulls. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +39,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the TopOneHundredMovies project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/'intuitive-parameter-2662'/top_one_hundred_movies/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the TopOneHundredMovies project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/dmaster18/top_one_hundred_movies/blob/master/CODE_OF_CONDUCT.md).
