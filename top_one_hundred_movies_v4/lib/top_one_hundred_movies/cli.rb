@@ -4,19 +4,20 @@ class TopOneHundredMovies::CLI
   def start
     puts "Here's a list of IMDb's Top 100 Movies:"
     puts "\n"
-	TopOneHundredMovies::Scraper.print_movie_list
-    scraper = TopOneHundredMovies::Scraper.new
     user_input = "y"
-    while user_input == 'y'
-      movie = scraper.movie_initializer
+	scraper = TopOneHundredMovies::Scraper.new
+	movie_list = scraper.print_movie_list
+    
+	while user_input == 'y'
+	  movie = scraper.movie_initializer
       movie.print_basic_details
       puts "\nWould you like to know more information about #{movie.title}?" 
       puts "Please enter 'y' for yes or 'n' for no."
-      user_input = gets.strip.downcase
+	  user_input = movie.valid_response
       watchlist_response = nil
       while user_input == 'y'
         movie.ask_user
-        user_input = gets.strip.to_i
+        user_input = movie.detailed_valid_response
         if user_input == 1
           movie.print_tagline
         elsif user_input == 2
@@ -31,7 +32,7 @@ class TopOneHundredMovies::CLI
 		if TopOneHundredMovies::Movie.my_watchlist.include?(movie) != true && watchlist_response == nil
 			puts "\nWould you like to add this movie to your watchlist?"
 			puts "Please enter 'y' for yes or 'n' for no"
-			user_input = gets.strip
+			user_input = movie.valid_response
 			if user_input == 'y'
 				watchlist_response = 'y'
 				movie.add_to_my_watchlist
@@ -42,18 +43,21 @@ class TopOneHundredMovies::CLI
 		end
 		puts "\nWould you like to know more about #{movie.title}?"
         puts "Please enter 'y' for yes or 'n' for no"
-        user_input = gets.strip
+        user_input = movie.valid_response
       end
 	  puts "Okay, exiting #{movie.title} now..."
 	  puts "Would you like to research another movie?"
       puts "Please enter 'y' for yes or 'n' for no"
-      user_input = gets.strip.downcase
+      user_input = movie.valid_response
+	  if user_input == 'y'
+		movie_list
+	  end
 	  end
 	  puts "Would you like to view your watchlist?"
 	  puts "Please enter 'y' for yes or 'n' for no"
-      user_input = gets.strip.downcase
+      user_input = movie.valid_response
 	  if user_input == 'y'
-		TopOneHundredMovies::Movie.print_my_watchlist
+		movie_list
 	  end
 	  puts "Thank you for viewing IMDb's Top 100 Movie List!"
 	end

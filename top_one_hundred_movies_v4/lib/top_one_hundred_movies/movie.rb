@@ -43,7 +43,7 @@ class TopOneHundredMovies::Movie
         @imdb_ranking = user_input
       else
         while input_requirement(user_input) != true
-          puts "Invalid user selection. Please enter a index between 1-100."
+          puts "Invalid user selection. Please enter a number between 1-100."
           user_input = (gets.strip).to_i
         end
 		@imdb_ranking = user_input
@@ -57,7 +57,7 @@ class TopOneHundredMovies::Movie
 	end 
 	
 	def index_page
-	  TopOneHundredMovies::Scraper.index_page
+	  TopOneHundredMovies::Scraper.new.index_page
 	 end
 	
 	def title
@@ -106,6 +106,16 @@ class TopOneHundredMovies::Movie
 	   puts "Enter (1) if you'd like to know #{title}'s tagline.\nEnter (2) if you'd like to know #{title}'s plot.\nEnter (3) if you'd like to know interesting trivia about #{title}.\nEnter (4) if you'd like to hear some of the most famous quotes from #{title}.\nEnter (5) if you'd like to know #{title}'s cast."
 	 end
 	
+	def detailed_valid_response
+		user_input = gets.strip.to_i
+		while user_input != 1 && user_input != 2 && user_input != 3 && user_input != 4 && user_input !=5
+			puts "\nInvalid response."
+			puts "Please enter a number between 1 and 5."
+			user_input = gets.strip.to_i
+		end
+		user_input
+	end
+	
 	def tagline
 	   movie_page.css("div.txt-block")[0].text.split("\n")[2].to_s.strip
 	end
@@ -145,10 +155,20 @@ class TopOneHundredMovies::Movie
 	  trivia
 	end
 	
+	def valid_response
+		"\nPlease enter 'y' for yes and 'n' for no."
+		user_input = gets.strip.downcase
+		while user_input != 'y' && user_input != 'n'
+			puts "\nInvalid response."
+			puts "Please enter 'y' for yes and 'n' for no."
+			user_input = gets.strip.downcase
+		end
+		user_input
+	end
+	
 	def more_fun_facts
 	  	puts "\nWould you like to see fifty more fun facts about #{title}?"
-	    puts "Enter 'y' for yes and 'n' for no."
-	    user_input = gets.strip
+	    valid_response
 	end  
 	
 	def print_trivia
@@ -258,8 +278,7 @@ class TopOneHundredMovies::Movie
 	
 	def more_quotes
 	  	puts "\nWould you like to see fifty more memorable quotes from #{title}?"
-	    puts "Enter 'y' for yes and 'n' for no."
-	    user_input = gets.strip
+	    valid_response
 	end  
 	
 	
